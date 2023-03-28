@@ -48,3 +48,9 @@ create table collection_track (
 	track_id integer references track(track_id),
 	constraint collection_track_pk primary key (collection_id,track_id)
 );
+
+create table album_performer (
+	album_id integer references album(album_id),
+	performer_id integer references performer(performer_id),
+	constraint calbum_performer_pk primary key (album_id,performer_id)
+);
