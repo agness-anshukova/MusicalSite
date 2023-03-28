@@ -126,3 +126,18 @@ begin
 end;$$
 call insert_test_data_album_track();
 select * from album_track;
+
+-- процедура вставляет одну тестовую запись в таблицу album_performer
+create or replace procedure insert_test_data_album_performer()
+language plpgsql
+as $$
+declare
+    t_album_id      int4;
+    t_performer_id  int4;
+begin
+	select album_id from album order by random() limit 1 into t_album_id;
+    select performer_id from performer order by random() limit 1 into t_performer_id;
+	insert into album_performer (album_id,performer_id) values (t_album_id, t_performer_id);
+end;$$
+call insert_test_data_album_performer();
+select * from album_performer;
