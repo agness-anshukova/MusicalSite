@@ -16,24 +16,19 @@ create table genre_performer (
 	constraint genre_performer_pk primary key (genre_id,performer_id)
 );
 
-create table track (
-	track_id serial primary key,
-	name varchar(40) not null,
-	duration numeric not null,
-	constraint track_uk unique (name)
-);
-
 create table album (
 	album_id serial primary key,
 	name varchar(40) not null,
-	year smallint not null,
+	year smallint CHECK (year > 1970 and year <= extract ( 'Year' FROM now()) ) not null,
 	constraint album_uk unique (name,year)
 );
 
-create table album_track (
+create table track (
+	track_id serial primary key,
+	name varchar(40) not null,
+	duration integer CHECK (duration > 180) not null,
 	album_id integer references album(album_id),
-	track_id integer references track(track_id),
-	constraint album_track_pk primary key (album_id,track_id)
+	constraint track_uk unique (name)
 );
 
 create table collection (
