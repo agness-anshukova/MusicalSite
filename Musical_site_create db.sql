@@ -34,7 +34,7 @@ create table track (
 create table collection (
 	collection_id serial primary key,
 	name varchar(40) not null,
-	year smallint not null,
+	year smallint CHECK (year > 1970 and year <= extract ( 'Year' FROM now()) ) not null,
 	constraint collection_uk unique (name,year )
 );
 
