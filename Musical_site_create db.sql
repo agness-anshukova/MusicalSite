@@ -26,7 +26,7 @@ create table album (
 create table track (
 	track_id serial primary key,
 	name varchar(40) not null,
-	duration integer CHECK (duration > 180) not null,
+	duration time check(duration > '00:00:00'::time without time zone) not null,
 	album_id integer references album(album_id),
 	constraint track_uk unique (name)
 );
