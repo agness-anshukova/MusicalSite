@@ -37,9 +37,9 @@ language plpgsql
 as $$
 declare
     track_name  varchar(40);
-   	duration    integer;
-    album_id	integer;
+   	duration    time;
     my_bool     boolean;
+    t_album_id  int4;
 begin
 	select (random()::integer)::boolean into my_bool;
 	if my_bool then
@@ -49,9 +49,9 @@ begin
     	select  substring('абвгдеёжзийклмнопрстуфхцчшщьыъэюя',1,(random()*32)::integer)
             ||' '||substring('абвгдеёжзийклмнопрстуфхцчшщьыъэюя',1,(random()*7)::integer) into track_name;
     end if;
-    select (random()*100 + 180)::integer into duration;
-    select a.album_id from album a order by random() limit 1 into album_id;
-	insert into track ("name", duration, album_id) values (track_name, duration, album_id);
+    select a.album_id  from album a order by random() limit 1 into t_album_id;
+    select random() * (time '00:59:00' - time '00:00:30') into duration;
+	insert into track ("name", duration, album_id) values (track_name, duration, t_album_id);
 end;$$
 call insert_test_data_track();
 select * from track;
@@ -105,7 +105,7 @@ language plpgsql
 as $$
 declare
     t_collection_id  int4;
-    t_track_id      int4;
+    t_track_id       int4;
 begin
 	select collection_id from collection order by random() limit 1 into t_collection_id;
     select track_id from track order by random() limit 1 into t_track_id;
@@ -113,6 +113,7 @@ begin
 end;$$
 call insert_test_data_collection_track();
 select * from collection_track;
+
 
 -- процедура вставляет одну тестовую запись в таблицу album_performer
 create or replace procedure insert_test_data_album_performer()
